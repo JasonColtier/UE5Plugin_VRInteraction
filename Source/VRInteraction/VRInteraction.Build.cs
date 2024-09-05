@@ -26,6 +26,8 @@ public class VRInteraction : ModuleRules
 			new string[]
 			{
 				"Core",
+				"VRExpansionPlugin",
+				"LogAndTools"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
@@ -38,6 +40,11 @@ public class VRInteraction : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
+				"HeadMountedDisplay",
+				"InputCore",
+				"UMG",
+				"NetCore",
+				"GameplayTags",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
