@@ -2,6 +2,7 @@
 
 #include "IrwinoBaseVRInteractionComp.h"
 
+#include "AsyncTreeDifferences.h"
 #include "BPFL_GenericTools.h"
 #include "TraceTool.h"
 #include "Components/BoxComponent.h"
@@ -77,39 +78,42 @@ void UIrwinoBaseVRInteractionComp::BindCollisionEvents(UGripMotionControllerComp
 
 			for (UActorComponent* Component : Components)
 			{
-				if (Component->ComponentTags.ContainsByPredicate([this](const FName& Tag) { return CollisionTags.Contains(Tag); }))
+				if (bUseCustomCollisionTags)
 				{
-					if (UBoxComponent* Box = Cast<UBoxComponent>(Component))
-					{
-						Box->OnComponentBeginOverlap.RemoveAll(this);
-						Box->OnComponentBeginOverlap.AddDynamic(this, &UIrwinoBaseVRInteractionComp::OnOwnerCollisionOverlapped);
-						Box->OnComponentHit.RemoveAll(this);
-						Box->OnComponentHit.AddDynamic(this, &UIrwinoBaseVRInteractionComp::OnOwnerCollisionHit);
-						BoundCollisions.Add(Cast<UShapeComponent>(Component));
-						TRACE("binding set with UBoxComponent");
-					}
-					else if (USphereComponent* Sphere = Cast<USphereComponent>(Component))
-					{
-						Sphere->OnComponentBeginOverlap.RemoveAll(this);
-						Sphere->OnComponentBeginOverlap.AddDynamic(this, &UIrwinoBaseVRInteractionComp::OnOwnerCollisionOverlapped);
-						Sphere->OnComponentHit.RemoveAll(this);
-						Sphere->OnComponentHit.AddDynamic(this, &UIrwinoBaseVRInteractionComp::OnOwnerCollisionHit);
-						BoundCollisions.Add(Cast<UShapeComponent>(Component));
-						TRACE("binding set with USphereComponent");
-					}
-					else if (UCapsuleComponent* Capsule = Cast<UCapsuleComponent>(Component))
-					{
-						Capsule->OnComponentBeginOverlap.RemoveAll(this);
-						Capsule->OnComponentBeginOverlap.AddDynamic(this, &UIrwinoBaseVRInteractionComp::OnOwnerCollisionOverlapped);
-						Capsule->OnComponentHit.RemoveAll(this);
-						Capsule->OnComponentHit.AddDynamic(this, &UIrwinoBaseVRInteractionComp::OnOwnerCollisionHit);
-						BoundCollisions.Add(Cast<UShapeComponent>(Component));
-						TRACE("binding set with UCapsuleComponent");
-					}
-					else
-					{
-						HandleUnknownCollision(Cast<UShapeComponent>(Component));
-					}
+					if (!Component->ComponentTags.ContainsByPredicate([this](const FName& Tag) { return CollisionTags.Contains(Tag); }))
+						break;
+				}
+
+				if (UBoxComponent* Box = Cast<UBoxComponent>(Component))
+				{
+					Box->OnComponentBeginOverlap.RemoveAll(this);
+					Box->OnComponentBeginOverlap.AddDynamic(this, &UIrwinoBaseVRInteractionComp::OnOwnerCollisionOverlapped);
+					Box->OnComponentHit.RemoveAll(this);
+					Box->OnComponentHit.AddDynamic(this, &UIrwinoBaseVRInteractionComp::OnOwnerCollisionHit);
+					BoundCollisions.Add(Cast<UShapeComponent>(Component));
+					TRACE("binding set with UBoxComponent");
+				}
+				else if (USphereComponent* Sphere = Cast<USphereComponent>(Component))
+				{
+					Sphere->OnComponentBeginOverlap.RemoveAll(this);
+					Sphere->OnComponentBeginOverlap.AddDynamic(this, &UIrwinoBaseVRInteractionComp::OnOwnerCollisionOverlapped);
+					Sphere->OnComponentHit.RemoveAll(this);
+					Sphere->OnComponentHit.AddDynamic(this, &UIrwinoBaseVRInteractionComp::OnOwnerCollisionHit);
+					BoundCollisions.Add(Cast<UShapeComponent>(Component));
+					TRACE("binding set with USphereComponent");
+				}
+				else if (UCapsuleComponent* Capsule = Cast<UCapsuleComponent>(Component))
+				{
+					Capsule->OnComponentBeginOverlap.RemoveAll(this);
+					Capsule->OnComponentBeginOverlap.AddDynamic(this, &UIrwinoBaseVRInteractionComp::OnOwnerCollisionOverlapped);
+					Capsule->OnComponentHit.RemoveAll(this);
+					Capsule->OnComponentHit.AddDynamic(this, &UIrwinoBaseVRInteractionComp::OnOwnerCollisionHit);
+					BoundCollisions.Add(Cast<UShapeComponent>(Component));
+					TRACE("binding set with UCapsuleComponent");
+				}
+				else
+				{
+					HandleUnknownCollision(Cast<UShapeComponent>(Component));
 				}
 			}
 		}

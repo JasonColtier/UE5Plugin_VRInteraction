@@ -96,6 +96,7 @@ bool UIrwinoVROverlapInteraction::IsObjectAlreadyGripped(const UObject* Object) 
 
 void UIrwinoVROverlapInteraction::TryGrab(UObject* ObjectToGrab)
 {
+	TRACE("try grabbing %s",*ObjectToGrab->GetName())
 	// Halt execution if the object is invalid
 	checkfSlow(IsValid(ObjectToGrab), TEXT("The assumed valid object to grab is invalid, null or pending kill."));
 	checkfSlow(IsValid(AssociatedMotionController), TEXT("The assumed valid attached motion controller is invalid, null or pending kill."));
@@ -314,6 +315,7 @@ void UIrwinoVROverlapInteraction::OnOwnerCollisionOverlapped(UPrimitiveComponent
 {
 	Super::OnOwnerCollisionOverlapped(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bBFromSweep, SweepResult);
 
+	TRACE("Overlapping %s",*OtherActor->GetName())
 
 	if (!AssociatedMotionController.IsValid())
 	{
