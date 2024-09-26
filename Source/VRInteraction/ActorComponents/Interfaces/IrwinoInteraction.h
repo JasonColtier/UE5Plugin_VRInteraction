@@ -44,6 +44,13 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category="Irwino Interactions")
 	FTransform GetOptionalGripTransformOffset(UGripMotionControllerComponent* QueryController);
-	// UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category="Irwino Interactions")
-	// FGameplayTag GetInteractionType();
+
+    //an objet not interactible should not be grippable, the object should deny the grip
+	UFUNCTION(BlueprintCallable,BlueprintImplementableEvent, Category="Irwino Interactions")
+	void ToggleInteractible(bool Interactible);
+	
+	//does the hand needs to be hidden if we grab this objet ?
+	//should be displayed again when any object is dropped
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category="Irwino Interactions")
+	bool ShouldHideHandOnGrip();
 };

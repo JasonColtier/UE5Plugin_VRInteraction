@@ -25,6 +25,10 @@
 		{
 			"Name": "VRExpansionPlugin",
 			"Enabled": true
+		},
+		{
+			"Name": "LogAndTools",
+			"Enabled": true
 		}
 	]
 }

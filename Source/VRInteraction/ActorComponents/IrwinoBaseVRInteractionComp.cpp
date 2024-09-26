@@ -2,14 +2,12 @@
 
 #include "IrwinoBaseVRInteractionComp.h"
 
-#include "AsyncTreeDifferences.h"
 #include "BPFL_GenericTools.h"
 #include "TraceTool.h"
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/ShapeComponent.h"
 #include "Components/SphereComponent.h"
-#include "Kismet/GameplayStatics.h"
 
 UIrwinoBaseVRInteractionComp::UIrwinoBaseVRInteractionComp(const FObjectInitializer& Initializer): Super(Initializer)
 {
@@ -81,7 +79,7 @@ void UIrwinoBaseVRInteractionComp::BindCollisionEvents(UGripMotionControllerComp
 				if (bUseCustomCollisionTags)
 				{
 					if (!Component->ComponentTags.ContainsByPredicate([this](const FName& Tag) { return CollisionTags.Contains(Tag); }))
-						break;
+						continue;
 				}
 
 				if (UBoxComponent* Box = Cast<UBoxComponent>(Component))

@@ -346,7 +346,8 @@ void UIrwinoVROverlapInteraction::OnOwnerCollisionOverlapped(UPrimitiveComponent
 			TheObjectWeWantToGrab = IIrwinoInteraction::Execute_GetInteractionComponent(OtherActor);
 			checkfSlow(TheObjectWeWantToGrab, "Attempting to grab an invalid custom component")
 		}
-		else
+
+		if(!IsValid(TheObjectWeWantToGrab))
 		{
 			// ...no, grab the whole actor 
 			TheObjectWeWantToGrab = OtherActor;
